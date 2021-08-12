@@ -1,0 +1,132 @@
+---
+title: "Loops and Functions"
+author: "Wylie Hampson"
+date: "8/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+# Part 1
+## Task 1
+
+```{r}
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+transects <- c("Transect A", "Transect B", "Transect C")
+
+week_matrix <- matrix(nrow = length(weekdays), ncol = length(transects))
+
+for (i in seq_along(transects)) {
+  for (j in seq_along(weekdays)) {
+    out <- paste(weekdays[j], "-", transects[i])
+    week_matrix[j, i] <- out
+  }
+}
+
+week_matrix
+```
+
+# Part 2
+## Task 2
+
+```{r}
+# Create a function with inputs mass and acceleration and returns newtons. 1 newton = 1kg * 1m/s^2
+
+force <- function(mass, acceleration) {
+  force_newtons <- mass * acceleration
+  return(paste("The resulting force is", force_newtons, "Newtons"))
+}
+
+force(mass = 5, acceleration = 7)
+```
+
+## Task 3
+
+```{r}
+name_column <- function(df, num) {
+  
+  if (num < 1) {
+    stop("num must be one or higher.")
+  } else if (num > ncol(df)) {
+    stop("num exceeds the amount of columns in the dataframe.")
+  }
+  
+  return(colnames(df[num]))
+  
+}
+
+name_column(df = mtcars, num = 5)
+```
+
+## Task 4
+
+```{r}
+# Create the dataframe
+
+fish_parms <- data.frame(sci_name = c("Chanos chanos", "Sphyraena barracuda", "Caranx ignoilis"),
+                         common_name = c("Milkfish", "Great barracuda", "Giant trevally"),
+                         a_est = c(0.0905, 0.0181, 0.0353),
+                         b_est = c(2.52, 3.27, 3.05))
+
+# Create the fish_weight function
+
+fish_weight <- function(fish_name, tot_length) {
+  
+  fish_stats <- switch(fish_name,
+                       "Milkfish" = c(0.0905, 2.52),
+                       "Great barracuda" = c(0.0181, 3.27),
+                       "Giant trevally" = c(0.0353, 3.05))
+  
+  weight <- fish_stats[1] * (tot_length ^ fish_stats[2])
+  return(weight)
+}
+
+fish_weight(fish_name = "Milkfish", tot_length = 120)
+
+# Create a range of lengths
+length_range <- seq(from = 0, to = 100, by = 1)
+
+milkfish_weights <- fish_weight("Milkfish", tot_length = length_range)
+milkfish_weights
+```
+
+## Task 5
+
+```{r}
+wave_power <- function(wave_height, period) {
+  power <- 0.5 * (wave_height ^ 2) * period
+  return(power)
+}
+
+# Find wave power for an 8 second period and a range of wave height from 0 to 3 by increments of 0.2
+# Make the wave height sequence
+height_range <- seq(from = 0, to = 3, by = 0.2)
+
+wave_power(wave_height = height_range, period = 8)
+```
+
+## Task 6
+
+```{r}
+wave_power_depth <- function(depth, wave_height, period) {
+  if (depth > 12) {
+    message("The deep water equation was used")
+    power <- 0.5 * (wave_height ^ 2) * period
+    return(power)
+  } else {
+    message("The shallow water equation was used")
+    power <- 0.81 * (wave_height ^ 2) * period
+    return(power)
+  }
+}
+
+wave_power_depth(depth = 13, wave_height = 3, period = 8)
+```
+
+
+
+
+
+
+
